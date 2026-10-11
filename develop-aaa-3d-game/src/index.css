@@ -1,0 +1,224 @@
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Silkscreen", "Courier New", monospace;
+  --font-body: "Space Grotesk", "Segoe UI", sans-serif;
+
+  --color-void: #070a12;
+  --color-slate-deep: #0f1524;
+  --color-moss: #7ac74f;
+  --color-moss-dark: #3f7a26;
+  --color-amber-glow: #ffc459;
+  --color-sky-soft: #79c7ff;
+  --color-dirt: #8b5a2b;
+  --color-stone-gray: #9aa3ad;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background: #070a12;
+  color: #e8eef7;
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  overscroll-behavior: none;
+}
+
+canvas {
+  display: block;
+  touch-action: none;
+}
+
+button {
+  font-family: inherit;
+}
+
+.pixelated {
+  image-rendering: pixelated;
+}
+
+/* ---------- ambient background for menus ---------- */
+.menu-bg {
+  background:
+    radial-gradient(120% 90% at 50% -10%, rgba(122, 199, 79, 0.16), transparent 60%),
+    radial-gradient(90% 70% at 85% 110%, rgba(121, 199, 255, 0.14), transparent 62%),
+    radial-gradient(70% 60% at 8% 90%, rgba(255, 196, 89, 0.1), transparent 60%),
+    linear-gradient(180deg, #0a0f1c 0%, #070a12 55%, #05070d 100%);
+}
+
+.grid-floor {
+  background-image:
+    linear-gradient(rgba(122, 199, 79, 0.09) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(122, 199, 79, 0.09) 1px, transparent 1px);
+  background-size: 44px 44px;
+  mask-image: linear-gradient(180deg, transparent 0%, #000 40%, #000 70%, transparent 100%);
+  animation: floor-drift 14s linear infinite;
+}
+
+@keyframes floor-drift {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 44px 44px;
+  }
+}
+
+.noise-overlay {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.42'/%3E%3C/svg%3E");
+  mix-blend-mode: overlay;
+}
+
+.vignette {
+  background: radial-gradient(115% 95% at 50% 45%, transparent 42%, rgba(2, 4, 9, 0.55) 88%, rgba(2, 4, 9, 0.85) 100%);
+}
+
+.water-tint {
+  background: linear-gradient(180deg, rgba(20, 90, 150, 0.42), rgba(8, 44, 86, 0.62));
+  backdrop-filter: blur(1.5px) saturate(1.2);
+}
+
+.hurt-flash {
+  background: radial-gradient(120% 100% at 50% 50%, transparent 30%, rgba(190, 30, 30, 0.5) 100%);
+}
+
+/* ---------- animations ---------- */
+@keyframes float-y {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+.anim-float {
+  animation: float-y 5.5s ease-in-out infinite;
+}
+
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.anim-rise {
+  animation: rise-in 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes pop-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.82);
+  }
+  70% {
+    transform: scale(1.04);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+.anim-pop {
+  animation: pop-in 0.28s cubic-bezier(0.2, 1.4, 0.4, 1) both;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -220% 0;
+  }
+  100% {
+    background-position: 220% 0;
+  }
+}
+.shimmer {
+  background-image: linear-gradient(100deg, transparent 35%, rgba(255, 255, 255, 0.22) 50%, transparent 65%);
+  background-size: 220% 100%;
+  animation: shimmer 2.4s linear infinite;
+}
+
+@keyframes pulse-ring {
+  0% {
+    box-shadow: 0 0 0 0 rgba(122, 199, 79, 0.5);
+  }
+  70% {
+    box-shadow: 0 0 0 14px rgba(122, 199, 79, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(122, 199, 79, 0);
+  }
+}
+.anim-ring {
+  animation: pulse-ring 2.2s ease-out infinite;
+}
+
+/* minecraft-ish bevelled button */
+.btn-voxel {
+  position: relative;
+  border: 2px solid rgba(0, 0, 0, 0.55);
+  box-shadow:
+    inset 2px 2px 0 rgba(255, 255, 255, 0.22),
+    inset -2px -2px 0 rgba(0, 0, 0, 0.42),
+    0 6px 0 rgba(0, 0, 0, 0.45),
+    0 10px 22px rgba(0, 0, 0, 0.45);
+  transition: transform 0.09s ease, box-shadow 0.09s ease, filter 0.16s ease;
+}
+.btn-voxel:hover {
+  filter: brightness(1.12) saturate(1.08);
+}
+.btn-voxel:active {
+  transform: translateY(5px);
+  box-shadow:
+    inset 2px 2px 0 rgba(255, 255, 255, 0.18),
+    inset -2px -2px 0 rgba(0, 0, 0, 0.42),
+    0 1px 0 rgba(0, 0, 0, 0.45),
+    0 4px 10px rgba(0, 0, 0, 0.4);
+}
+
+.panel-voxel {
+  border: 2px solid rgba(0, 0, 0, 0.6);
+  box-shadow:
+    inset 2px 2px 0 rgba(255, 255, 255, 0.1),
+    inset -2px -2px 0 rgba(0, 0, 0, 0.4),
+    0 18px 50px rgba(0, 0, 0, 0.55);
+}
+
+.slot-voxel {
+  border: 2px solid rgba(0, 0, 0, 0.65);
+  box-shadow:
+    inset 2px 2px 0 rgba(0, 0, 0, 0.4),
+    inset -2px -2px 0 rgba(255, 255, 255, 0.12);
+}
+
+.scan-lines {
+  background-image: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.22) 0px,
+    rgba(0, 0, 0, 0.22) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.35);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(122, 199, 79, 0.4);
+  border: 2px solid rgba(0, 0, 0, 0.4);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(122, 199, 79, 0.65);
+}
